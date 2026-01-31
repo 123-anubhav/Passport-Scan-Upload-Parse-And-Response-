@@ -114,4 +114,31 @@ If the traineddata is correct, Tesseract should output OCR text instead of error
 
 ---
 
+
+---
+```yaml
+FROM ubuntu:22.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y \
+    tesseract-ocr \
+    curl \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN mkdir -p /usr/share/tesseract-ocr/5/tessdata
+
+RUN curl -L \
+ https://raw.githubusercontent.com/tesseract-ocr/tessdata/main/ocrb.traineddata \
+ -o /usr/share/tesseract-ocr/5/tessdata/ocrb.traineddata
+
+ENV TESSDATA_PREFIX=/usr/share/tesseract-ocr/5/tessdata
+
+WORKDIR /data
+CMD ["bash"]
+
+```
+
+---
 ---
